@@ -2,14 +2,38 @@ package com.example;
 
 import com.example.mock.DAOMock;
 import com.example.mock.IDAOMock;
+import com.example.model.Customers;
+import com.example.mybatis.data.CustomersMapper;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.util.List;
 
 @Path("product")
 public class ProductResource {
+
+    public ProductResource() {
+
+        try {
+            InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+            SqlSession session = sqlSessionFactory.openSession();
+
+            CustomersMapper mapper = session.getMapper(CustomersMapper.class);
+            Customers result = mapper.selectCustomers(1);
+            System.out.println(result);
+
+            session.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
