@@ -3,6 +3,7 @@ package com.example;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -21,5 +22,12 @@ public class MyResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getIt() {
         return "Got it!";
+    }
+
+    @GET
+    @Path("query")
+    @Produces(MediaType.TEXT_PLAIN)
+    public int getItQeury(@QueryParam("t") int t) {
+        return t;
     }
 }
